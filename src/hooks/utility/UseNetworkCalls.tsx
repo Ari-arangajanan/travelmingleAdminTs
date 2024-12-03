@@ -1,30 +1,10 @@
+import { getUserloginReq, getUserloginRes } from "../../pages/login/UserLogin";
+import {
+  ServiceProviderListRequest,
+  ServiceProviderListResponse,
+} from "../../pages/serviceCategory/ServiceProviderList";
+import { UserListRequest, UserListResponse } from "../../pages/user/User";
 import ApiCalls from "./ApiCalls";
-
-interface ServiceProviderListResponse {
-  providers: Array<{
-    id: number;
-    name: string;
-    services: string[];
-  }>;
-  total: number;
-}
-
-interface ServiceProviderListRequest {
-  page?: number;
-  limit?: number;
-  userName?: string;
-}
-
-interface getUserloginReq {
-  userName: string;
-  password: string;
-  rememberMe: boolean;
-}
-
-interface getUserloginRes {
-  userName: string;
-  refreshToken: string;
-}
 
 const UseNetworkCalls = () => {
   const ServiceProviderListRequest = (
@@ -64,7 +44,23 @@ const UseNetworkCalls = () => {
       },
     });
   };
-  return { ServiceProviderListRequest, getUserloginReq };
+
+  const getSysUser = (params: UserListRequest): Promise<UserListResponse> => {
+    const { userName = "" } = params;
+    const payload = {
+      userName,
+    };
+    return ApiCalls<UserListResponse>({
+      endpoint: "/admin/systemUser/userList",
+      method: "POST",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
+  return { ServiceProviderListRequest, getUserloginReq, getSysUser };
 };
 
 export default UseNetworkCalls;

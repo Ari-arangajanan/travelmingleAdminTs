@@ -33,7 +33,7 @@ interface LayoutProps {
 }
 const LayOut = (props: LayoutProps) => {
   const { window } = props;
-  const router = useDemoRouter("/dashboard");
+  const router = useDemoRouter("/admin/dashboard");
   // Remove this const when copying and pasting into your project.
   const demoWindow = window !== undefined ? window() : undefined;
 
@@ -101,16 +101,21 @@ const LayOut = (props: LayoutProps) => {
       <DashboardLayout>
         <Box
           sx={{
-            py: 4,
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
+            height: "100vh", // Full height to match the sidebar
           }}
         >
-          {renderPage(router.pathname)}
+          <Box
+            sx={{
+              flexGrow: 1,
+              p: 2, // Add padding for spacing
+              overflowY: "auto", // Ensure scrollable content if needed
+            }}
+          >
+            {renderPage(router.pathname)}
+          </Box>
         </Box>
-        {router.pathname}
+        {/* {router.pathname} */}
       </DashboardLayout>
     </AppProvider>
   );

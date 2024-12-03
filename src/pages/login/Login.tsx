@@ -9,13 +9,12 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import UseNetworkCalls from "../../hooks/networkCall/UseNetworkCalls";
+import UseNetworkCalls from "../../hooks/utility/UseNetworkCalls";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie"; // Install js-cookie: npm install js-cookie
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    userName: "",
     password: "",
     rememberMe: false,
   });
@@ -35,33 +34,35 @@ const Login = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Form Data:", formData);
-    setLoading(true);
-    setError("");
+    const { userName, password, rememberMe } = formData;
+
+    // Frontend validation for empty fields
+    if (!userName || !password) {
+      setError("Please fill in both username and password.");
+      return;
+    }
+
+    setError(""); // Clear errors
+    setLoading(true); // Set loading state
+
     try {
-      // Call the login API
+      // Call the login API using getUserLogin method
       const response = await getUserloginReq({
-        userName: formData.username,
-        password: formData.password,
-        rememberMe: formData.rememberMe,
+        userName,
+        password,
+        rememberMe,
       });
-      console.log(response);
+      console.log("Login successful:", response);
 
-      // Save token and username in cookies
-      Cookies.set("userName", response.userName, {
-        expires: formData.rememberMe ? 7 : undefined, // Set cookie expiration for "Remember Me"
-      });
-      Cookies.set("refreshToken", response.refreshToken, {
-        expires: formData.rememberMe ? 7 : undefined,
-      });
-
-      // Navigate to a different page after login
+      // Navigate to the home page after successful login
       navigate("/home");
-    } catch (error) {
-      setError("Invalid username or password.");
-      console.error("Login error:", error);
+    } catch (error: unknown) {
+      // Handle login failure
+      console.error("Login failed:", error);
+      setError("Login failed. Please check your username and password.");
+      alert(error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Reset loading state
     }
     // Implement your login logic here, such as an API call
   };
@@ -108,12 +109,12 @@ const Login = () => {
             margin="normal"
             required
             fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
+            id="userName"
+            label="User Name"
+            name="userName"
+            autoComplete="userName"
             autoFocus
-            value={formData.username}
+            value={formData.userName}
             onChange={handleChange}
           />
           <TextField
