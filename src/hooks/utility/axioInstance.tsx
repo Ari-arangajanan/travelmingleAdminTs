@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import React from "react";
 
 const axioInstance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL, // Load the base URL from environment variables

@@ -52,7 +52,7 @@ const TableComponent = ({
   onUpdate,
   onAdd,
   showSearch,
-  showAddButton,
+  showAddButton = false,
 }: DynamiTableProps) => {
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = useState<string>(columns[0]?.id || "");
@@ -101,12 +101,15 @@ const TableComponent = ({
   const filteredData = useMemo(
     () =>
       data.filter((row) =>
-        columns.some((column) =>
-          row[column.id]
-            .toString()
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase())
-        )
+        columns.some((column) => {
+          const cellValue = row[column.id];
+          return cellValue
+            ? cellValue
+                .toString()
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase())
+            : false;
+        })
       ),
     [data, searchQuery, columns]
   );
@@ -133,16 +136,16 @@ const TableComponent = ({
           label="Search"
           variant="outlined"
           size="small"
-          sx={{ mb: 2, width: "100%" }}
+          sx={{ mb: 2, width: "200px" }}
           onChange={handleSearch}
         />
       )}
-      {showAddButton && (
+      {showAddButton && onAdd && (
         <Button
           variant="contained"
           color="primary"
           onClick={onAdd}
-          sx={{ mb: 2 }}
+          sx={{ mb: 1, ml: 2 }}
         >
           Add Details
         </Button>
@@ -182,7 +185,18 @@ const TableComponent = ({
                     </TableSortLabel>
                   </TableCell>
                 ))}
-                {(onUpdate || onDelete) && <TableCell>Actions</TableCell>}
+                {(onUpdate || onDelete) && (
+                  <TableCell
+                    sx={{
+                      position: "sticky",
+                      right: 0,
+                      background: "white",
+                      zIndex: 1,
+                    }}
+                  >
+                    Actions
+                  </TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody>

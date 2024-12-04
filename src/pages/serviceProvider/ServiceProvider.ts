@@ -1,4 +1,4 @@
-export interface UserListRequest {
+export interface ServiceProviderListRequest {
     page: number;
     limit: number;
     id?: number;
@@ -7,7 +7,7 @@ export interface UserListRequest {
   }
   
 
-export interface UserListResponse {
+export interface ServiceProviderListResponse {
     content: Array<{
       id: number;
       telegramId: number;
@@ -21,6 +21,8 @@ export interface UserListResponse {
       preferredLanguage: string;
       status: number;
       type: number;
+      category:number;
+      location:string;
     }>;
     pageable: {
       pageNumber: number;

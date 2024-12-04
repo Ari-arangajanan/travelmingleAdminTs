@@ -2,30 +2,11 @@ import { getUserloginReq, getUserloginRes } from "../../pages/login/UserLogin";
 import {
   ServiceProviderListRequest,
   ServiceProviderListResponse,
-} from "../../pages/serviceCategory/ServiceProviderList";
+} from "../../pages/serviceProvider/ServiceProvider";
 import { UserListRequest, UserListResponse } from "../../pages/user/User";
 import ApiCalls from "./ApiCalls";
 
 const UseNetworkCalls = () => {
-  const ServiceProviderListRequest = (
-    params: ServiceProviderListRequest
-  ): Promise<ServiceProviderListResponse> => {
-    const { page = 0, limit = 10, userName = "" } = params;
-    const payload = {
-      page,
-      limit,
-      ...(userName && { userName }),
-    };
-    return ApiCalls<ServiceProviderListResponse>({
-      endpoint: "/admin/systemUser/serviceProviderList",
-      method: "POST",
-      data: payload,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
-
   const getUserloginReq = (
     params: getUserloginReq
   ): Promise<getUserloginRes> => {
@@ -45,10 +26,12 @@ const UseNetworkCalls = () => {
     });
   };
 
-  const getSysUser = (params: UserListRequest): Promise<UserListResponse> => {
-    const { userName = "" } = params;
-    const payload = {
-      userName,
+  const getSnUser = (params: UserListRequest): Promise<UserListResponse> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+      telegramId: params.telegramId ? Number(params.telegramId) : undefined,
+      id: params.id ? Number(params.id) : undefined,
     };
     return ApiCalls<UserListResponse>({
       endpoint: "/admin/systemUser/userList",
@@ -60,7 +43,30 @@ const UseNetworkCalls = () => {
     });
   };
 
-  return { ServiceProviderListRequest, getUserloginReq, getSysUser };
+  const getSnServiceProvider = (
+    params: ServiceProviderListRequest
+  ): Promise<ServiceProviderListResponse> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+      telegramId: params.telegramId ? Number(params.telegramId) : undefined,
+      id: params.id ? Number(params.id) : undefined,
+    };
+    return ApiCalls<ServiceProviderListResponse>({
+      endpoint: "/admin/systemUser/serviceProviderList",
+      method: "POST",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
+  return {
+    getUserloginReq,
+    getSnUser,
+    getSnServiceProvider,
+  };
 };
 
 export default UseNetworkCalls;
