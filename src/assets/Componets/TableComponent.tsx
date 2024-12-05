@@ -131,25 +131,29 @@ const TableComponent = ({
 
   return (
     <Box sx={{ width: "100%" }}>
-      {showSearch && (
-        <TextField
-          label="Search"
-          variant="outlined"
-          size="small"
-          sx={{ mb: 2, width: "200px" }}
-          onChange={handleSearch}
-        />
-      )}
-      {showAddButton && onAdd && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={onAdd}
-          sx={{ mb: 1, ml: 2 }}
-        >
-          Add Details
-        </Button>
-      )}
+      <Box>
+        {showSearch && (
+          <TextField
+            label="Search"
+            variant="outlined"
+            size="small"
+            sx={{ mb: 2, width: "200px" }}
+            onChange={handleSearch}
+          />
+        )}
+      </Box>
+      <Box>
+        {showAddButton && onAdd && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onAdd}
+            sx={{ mb: 1, ml: 2 }}
+          >
+            Add Details
+          </Button>
+        )}
+      </Box>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
           <Table>

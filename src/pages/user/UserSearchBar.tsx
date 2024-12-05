@@ -44,7 +44,7 @@ const UserSearchBar: React.FC<searchBarProps> = ({ onSearch }) => {
         onChange={(value) => handleInputChange("id", value)}
       />
       <Button variant="contained" onClick={handleSearchClick}>
-        Search
+        Filter
       </Button>
     </Box>
   );

@@ -1,5 +1,7 @@
 export interface getSysUserReq {
-    userName: string;
+    page: number;
+    limit: number;
+    userName?: string;
   }
   
 export interface getSysUserRes {
