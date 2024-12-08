@@ -46,7 +46,7 @@ const SystemUser = () => {
       try {
         // Fetch data
         const response = await getSysUser(params);
-        setData(response.content);
+        setData(response.content.content);
         setTotalRecords(response.totalElements);
       } catch (err: any) {
         if (err.response?.status === 401) {

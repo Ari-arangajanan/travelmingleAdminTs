@@ -39,14 +39,20 @@ const AddSysUser: React.FC<Params> = ({ handleSave, handleClose, open }) => {
     role: 1,
   });
   const [passwordError, setPasswordError] = useState<string>("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [roles, setRoles] = useState<{ id: number; role: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
+    try {
+      setLoading(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
