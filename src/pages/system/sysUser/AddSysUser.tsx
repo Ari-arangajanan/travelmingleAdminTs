@@ -9,8 +9,9 @@ import {
   Switch,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormDialogtxs from "../../../assets/Componets/FormDialogtxs";
+import { useNavigate } from "react-router-dom";
 
 interface Params {
   handleSave: (data: { name: string; email: string }) => void;
@@ -38,6 +39,15 @@ const AddSysUser: React.FC<Params> = ({ handleSave, handleClose, open }) => {
     role: 1,
   });
   const [passwordError, setPasswordError] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+
+  const [roles, setRoles] = useState<{ id: number; role: string }[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoading(true);
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -73,6 +83,9 @@ const AddSysUser: React.FC<Params> = ({ handleSave, handleClose, open }) => {
       role: Number(e.target.value as number),
     }));
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <>

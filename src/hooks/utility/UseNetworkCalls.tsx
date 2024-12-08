@@ -4,6 +4,10 @@ import {
   ServiceProviderListResponse,
 } from "../../pages/serviceProvider/ServiceProviderInterface";
 import {
+  getSysUserRoleReq,
+  getSysUserRoleRes,
+} from "../../pages/system/sysRole/SysRole";
+import {
   getSysUserReq,
   getSysUserRes,
 } from "../../pages/system/sysUser/SysUser";
@@ -81,11 +85,29 @@ const UseNetworkCalls = () => {
     });
   };
 
+  const getSysRole = (
+    params: getSysUserRoleReq
+  ): Promise<getSysUserRoleRes> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+    };
+    return ApiCalls<getSysUserRoleRes>({
+      endpoint: "/admin/systemUser/index",
+      method: "POST",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   return {
     getUserloginReq,
     getSnUser,
     getSnServiceProvider,
     getSysUser,
+    getSysRole,
   };
 };
 
