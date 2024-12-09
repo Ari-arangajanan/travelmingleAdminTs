@@ -90,7 +90,7 @@ const SystemUser = () => {
         return;
       }
       // Validate required fields
-      if (!data.name || !data.email || !data.phone || !data.password) {
+      if (!data.username || !data.email || !data.phone || !data.password) {
         alert("Please fill in all required fields.");
         return;
       }
@@ -101,7 +101,7 @@ const SystemUser = () => {
       } else {
         alert(`Failed to add user: ${response.message}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error adding user:", error);
       alert("An error occurred while adding the user.");
       if (error.response?.status === 401) {

@@ -14,7 +14,7 @@ import FormDialogtxs from "../../../assets/Componets/FormDialogtxs";
 
 interface Params {
   handleSave: (data: {
-    name: string;
+    username: string;
     email: string;
     phone: number;
     avatar: string;
@@ -37,7 +37,7 @@ const AddSysUser: React.FC<Params> = ({
   dropdownData,
 }) => {
   const [formData, setFormData] = useState<{
-    name: string;
+    username: string;
     email: string;
     phone: number;
     avatar: string;
@@ -46,7 +46,7 @@ const AddSysUser: React.FC<Params> = ({
     confirmPassword: string;
     role: number;
   }>({
-    name: "",
+    username: "",
     email: "",
     phone: 0,
     avatar: "",
@@ -106,8 +106,8 @@ const AddSysUser: React.FC<Params> = ({
         <TextField
           margin="dense"
           label="Username"
-          name="name"
-          value={formData.name}
+          name="username"
+          value={formData.username}
           onChange={handleChange}
           fullWidth
         />

@@ -57,7 +57,7 @@ export interface GetSysUserRes {
 }
 
 export interface AddSysUserReq {
-    name: string;
+    username: string;
     email: string;
     phone: number;
     avatar: string;
