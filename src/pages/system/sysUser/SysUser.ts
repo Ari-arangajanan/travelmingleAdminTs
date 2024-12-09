@@ -71,5 +71,14 @@ export interface AddSysUserRes {
     success: boolean;
     message: string;
   }
+
+  export interface deleteSysUserReq {
+    id: number
+  }
+
+export interface deleteSysUserRes {
+    success: boolean;
+    message: string;
+  }
   
   

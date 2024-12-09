@@ -10,6 +10,8 @@ import {
 import {
   AddSysUserReq,
   AddSysUserRes,
+  deleteSysUserReq,
+  deleteSysUserRes,
   GetSysUserReq,
   GetSysUserRes,
 } from "../../pages/system/sysUser/SysUser";
@@ -97,6 +99,19 @@ const UseNetworkCalls = () => {
     });
   };
 
+  const deleteSysUser = ({
+    id,
+  }: deleteSysUserReq): Promise<deleteSysUserRes> => {
+    return ApiCalls<deleteSysUserRes>({
+      endpoint: `/admin/systemUser/deleteUser?id=${id}`,
+      method: "DELETE",
+      data: { id },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   const getSysRole = (
     params: getSysUserRoleReq
   ): Promise<getSysUserRoleRes> => {
@@ -121,6 +136,7 @@ const UseNetworkCalls = () => {
     getSysUser,
     getSysRole,
     addSysUser,
+    deleteSysUser,
   };
 };
 

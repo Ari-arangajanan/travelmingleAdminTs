@@ -34,7 +34,7 @@ const SystemUser = () => {
   const [dropDownData, setDropDownData] = useState<
     Array<{ role: string; id: number }>
   >([]);
-  const { getSysUser, addSysUser } = UseNetworkCalls();
+  const { getSysUser, addSysUser, deleteSysUser } = UseNetworkCalls();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -81,8 +81,6 @@ const SystemUser = () => {
   };
 
   const handleSave = async (data: AddSysUserReq) => {
-    alert(data);
-    console.log("----------------d", data);
     try {
       // Optional: Validate the data
       if (data.password !== data.confirmPassword) {
@@ -95,15 +93,16 @@ const SystemUser = () => {
         return;
       }
       const response = await addSysUser(data);
-      if (response.success) {
+      if (response) {
         alert("User added successfully!");
         setOpen(false); // Close dialog
       } else {
-        alert(`Failed to add user: ${response.message}`);
+        alert(`Failed to add user: ${response}`);
+        setError(response);
       }
     } catch (error: any) {
       console.error("Error adding user:", error);
-      alert("An error occurred while adding the user.");
+      alert(error);
       if (error.response?.status === 401) {
         alert("system.unAuthorized");
         navigate("/login");
@@ -119,8 +118,27 @@ const SystemUser = () => {
   };
 
   // Handle Delete action
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     alert(`Delete clicked for ID: ${id}`);
+    try {
+      const response = await deleteSysUser({ id });
+      if (response) {
+        alert("User added successfully!");
+        setOpen(false); // Close dialog
+        window.location.reload();
+      } else {
+        alert(`Failed to delete user: ${response}`);
+      }
+    } catch (error: any) {
+      console.error("Error adding user:", error);
+      alert("An error occurred while deleting the user.");
+      if (error.response?.status === 401) {
+        alert("system.unAuthorized");
+        navigate("/login");
+      } else {
+        setError("Failed to delete user.");
+      }
+    }
   };
 
   const handleSearch = (newFilters: { [Key: string]: string }) => {
