@@ -6,7 +6,7 @@ import { Box, Typography } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { useDemoRouter } from "@toolpad/core/internal";
 import DashBoard from "../pages/dashBoard/DashBoard";
-import UserPage from "../pages/UserPage";
+import UserPage from "../pages/user/UserPage";
 import ServiceProvider from "../pages/serviceProvider/ServiceProvider";
 import ServiceCategory from "../pages/serviceCategory/ServiceCategory";
 import SystemUser from "../pages/system/sysUser/SystemUser";

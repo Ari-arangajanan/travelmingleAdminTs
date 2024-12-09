@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
-import TableComponent from "../assets/Componets/TableComponent";
+import TableComponent from "../../assets/Componets/TableComponent";
 import { useEffect, useState } from "react";
-import UseNetworkCalls from "../hooks/utility/UseNetworkCalls";
+import UseNetworkCalls from "../../hooks/utility/UseNetworkCalls";
 import { useNavigate } from "react-router-dom";
-import UserSearchBar from "./user/UserSearchBar";
+import UserSearchBar from "./UserSearchBar";
 
 const UserPage = () => {
   // Define the columns
