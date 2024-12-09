@@ -9,22 +9,39 @@ import {
   Switch,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FormDialogtxs from "../../../assets/Componets/FormDialogtxs";
-import { useNavigate } from "react-router-dom";
 
 interface Params {
-  handleSave: (data: { name: string; email: string }) => void;
+  handleSave: (data: {
+    name: string;
+    email: string;
+    phone: number;
+    avatar: string;
+    status: number;
+    password: string;
+    confirmPassword: string;
+    role: number;
+  }) => void;
   handleClose: () => void;
   open: boolean;
+  dropdownData: Array<{
+    role: string;
+    id: number;
+  }>;
 }
-const AddSysUser: React.FC<Params> = ({ handleSave, handleClose, open }) => {
+const AddSysUser: React.FC<Params> = ({
+  handleSave,
+  handleClose,
+  open,
+  dropdownData,
+}) => {
   const [formData, setFormData] = useState<{
     name: string;
     email: string;
     phone: number;
     avatar: string;
-    status: boolean;
+    status: number;
     password: string;
     confirmPassword: string;
     role: number;
@@ -33,27 +50,12 @@ const AddSysUser: React.FC<Params> = ({ handleSave, handleClose, open }) => {
     email: "",
     phone: 0,
     avatar: "",
-    status: true,
+    status: 1,
     password: "",
     confirmPassword: "",
     role: 1,
   });
   const [passwordError, setPasswordError] = useState<string>("");
-  const [loading, setLoading] = useState(false);
-
-  const [roles, setRoles] = useState<{ id: number; role: string }[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    try {
-      setLoading(true);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -80,7 +82,7 @@ const AddSysUser: React.FC<Params> = ({ handleSave, handleClose, open }) => {
   };
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, status: e.target.checked }));
+    setFormData((prev) => ({ ...prev, status: e.target.checked ? 1 : 0 }));
   };
 
   const handleRoleChange = (e: SelectChangeEvent<number>) => {
@@ -89,9 +91,6 @@ const AddSysUser: React.FC<Params> = ({ handleSave, handleClose, open }) => {
       role: Number(e.target.value as number),
     }));
   };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
     <>
@@ -174,16 +173,17 @@ const AddSysUser: React.FC<Params> = ({ handleSave, handleClose, open }) => {
             value={formData.role}
             onChange={handleRoleChange}
           >
-            <MenuItem value={0}>Admin</MenuItem>
-            <MenuItem value={1}>User</MenuItem>
-            <MenuItem value={2}>Manager</MenuItem>
-            <MenuItem value={3}>Developer</MenuItem>
+            {dropdownData.map((item) => (
+              <MenuItem key={item.id} value={item.id}>
+                {item.role}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
         <FormControlLabel
           control={
             <Switch
-              checked={formData.status}
+              checked={!!formData.status}
               onChange={handleStatusChange}
               name="status"
             />

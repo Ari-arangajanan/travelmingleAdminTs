@@ -5,6 +5,7 @@ import SysUserSearch from "./SysUserSearch";
 import { Box } from "@mui/material";
 import TableComponent from "../../../assets/Componets/TableComponent";
 import AddSysUser from "./AddSysUser";
+import { AddSysUserReq } from "./SysUser";
 
 const SystemUser = () => {
   // Define the columns
@@ -30,8 +31,10 @@ const SystemUser = () => {
   const [filters, setFilters] = useState<{ [key: string]: any }>({
     userName: "",
   });
-  const { getSysUser } = UseNetworkCalls();
-
+  const [dropDownData, setDropDownData] = useState<
+    Array<{ role: string; id: number }>
+  >([]);
+  const { getSysUser, addSysUser } = UseNetworkCalls();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -47,6 +50,7 @@ const SystemUser = () => {
         // Fetch data
         const response = await getSysUser(params);
         setData(response.content.content);
+        setDropDownData(response.dropdownData);
         setTotalRecords(response.totalElements);
       } catch (err: any) {
         if (err.response?.status === 401) {
@@ -76,11 +80,37 @@ const SystemUser = () => {
     setOpen(false);
   };
 
-  const handleSave = (data: { name: string; email: string }) => {
+  const handleSave = async (data: AddSysUserReq) => {
     alert(data);
     console.log("----------------d", data);
-
-    setOpen(false);
+    try {
+      // Optional: Validate the data
+      if (data.password !== data.confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+      // Validate required fields
+      if (!data.name || !data.email || !data.phone || !data.password) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+      const response = await addSysUser(data);
+      if (response.success) {
+        alert("User added successfully!");
+        setOpen(false); // Close dialog
+      } else {
+        alert(`Failed to add user: ${response.message}`);
+      }
+    } catch (error) {
+      console.error("Error adding user:", error);
+      alert("An error occurred while adding the user.");
+      if (error.response?.status === 401) {
+        alert("system.unAuthorized");
+        navigate("/login");
+      } else {
+        setError("Failed to fetch users.");
+      }
+    }
   };
 
   // Handle Update action
@@ -108,6 +138,7 @@ const SystemUser = () => {
           open={open}
           handleClose={handleClose}
           handleSave={handleSave}
+          dropdownData={dropDownData}
         />
         <Box>
           <TableComponent

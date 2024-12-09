@@ -55,3 +55,21 @@ export interface GetSysUserRes {
       empty: boolean;
   };
 }
+
+export interface AddSysUserReq {
+    name: string;
+    email: string;
+    phone: number;
+    avatar: string;
+    status: number;
+    password: string;
+    confirmPassword: string;
+    role: number;
+  }
+
+export interface AddSysUserRes {
+    success: boolean;
+    message: string;
+  }
+  
+  

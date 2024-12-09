@@ -6,10 +6,12 @@ import {
 import {
   getSysUserRoleReq,
   getSysUserRoleRes,
-} from "../../pages/system/sysRole/SysRole";
+} from "../../pages/system/sysRole/SysRoleInterface";
 import {
-  getSysUserReq,
-  getSysUserRes,
+  AddSysUserReq,
+  AddSysUserRes,
+  GetSysUserReq,
+  GetSysUserRes,
 } from "../../pages/system/sysUser/SysUser";
 import { UserListRequest, UserListResponse } from "../../pages/user/User";
 import ApiCalls from "./ApiCalls";
@@ -70,15 +72,25 @@ const UseNetworkCalls = () => {
     });
   };
 
-  const getSysUser = (params: getSysUserReq): Promise<getSysUserRes> => {
+  const getSysUser = (params: GetSysUserReq): Promise<GetSysUserRes> => {
     // Use the params object directly to construct the payload
     const payload: Record<string, any> = {
       ...params,
     };
-    return ApiCalls<getSysUserRes>({
+    return ApiCalls<GetSysUserRes>({
       endpoint: "/admin/systemUser/index",
       method: "POST",
       data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+  const addSysUser = (data: AddSysUserReq): Promise<AddSysUserRes> => {
+    return ApiCalls<AddSysUserRes>({
+      endpoint: "/admin/systemUser/register",
+      method: "POST",
+      data: data, // Directly pass the object
       headers: {
         "Content-Type": "application/json",
       },
@@ -108,6 +120,7 @@ const UseNetworkCalls = () => {
     getSnServiceProvider,
     getSysUser,
     getSysRole,
+    addSysUser,
   };
 };
 
