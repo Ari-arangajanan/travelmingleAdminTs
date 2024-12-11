@@ -5,6 +5,7 @@ import AddCategory from "./AddCategory";
 import { AddCategoryReq, SearchCategoryReq } from "./ServiceCategoryInterface";
 import TableComponent from "../../assets/Componets/TableComponent";
 import CategorySearch from "./CategorySearch";
+import UseNetworkCalls from "../../hooks/utility/UseNetworkCalls";
 
 const ServiceCategory = () => {
   const columnsSet = [
@@ -26,8 +27,9 @@ const ServiceCategory = () => {
     userName: "",
   });
   const [open, setOpen] = useState(false);
+  const { getCatrgory, addCategory } = UseNetworkCalls();
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
       // Convert filters to ensure numeric values for telegramId and id
@@ -39,7 +41,9 @@ const ServiceCategory = () => {
       try {
         // Fetch data
         const response = await getCatrgory(params);
-        setData(response.content.content);
+        setData(response.content);
+        console.log(data);
+
         setTotalRecords(response.totalElements);
       } catch (err: any) {
         if (err.response?.status === 401) {
@@ -54,20 +58,18 @@ const ServiceCategory = () => {
     };
 
     fetchUsers();
-
-  }[page, rowsPerPage, filters]);
+  }, [page, rowsPerPage, filters]);
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-
 
   const handleSave = async (data: AddCategoryReq) => {
     try {
       // Optional: Validate the data
-      if (data.categoryName !== null) {
+      if (data.categoryName == null) {
         alert("categoryName Cannotbe Null");
         return;
       }
-      const response = await addSysUser(data);
+      const response = await addCategory(data);
       if (response) {
         alert("User added successfully!");
         setOpen(false); // Close dialog
@@ -106,14 +108,14 @@ const ServiceCategory = () => {
   const handleDelete = async (id: number) => {
     alert(`Delete clicked for ID: ${id}`);
     try {
-      const response = await deleteSysUser({ id });
-      if (response) {
-        alert("User added successfully!");
-        setOpen(false); // Close dialog
-        window.location.reload();
-      } else {
-        alert(`Failed to delete user: ${response}`);
-      }
+      // const response = await deleteSysUser({ id });
+      // if (response) {
+      //   alert("User added successfully!");
+      //   setOpen(false); // Close dialog
+      //   window.location.reload();
+      // } else {
+      //   alert(`Failed to delete user: ${response}`);
+      // }
     } catch (error: any) {
       console.error("Error adding user:", error);
       alert("An error occurred while deleting the user.");

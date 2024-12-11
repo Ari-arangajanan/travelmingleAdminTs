@@ -1,5 +1,10 @@
 import { getUserloginReq, getUserloginRes } from "../../pages/login/UserLogin";
 import {
+  AddCategoryReq,
+  GetCategoryReq,
+  GetCategoryRes,
+} from "../../pages/serviceCategory/ServiceCategoryInterface";
+import {
   ServiceProviderListRequest,
   ServiceProviderListResponse,
 } from "../../pages/serviceProvider/ServiceProviderInterface";
@@ -129,15 +134,26 @@ const UseNetworkCalls = () => {
     });
   };
 
-  const getCatrgory = (params: GetSysUserReq): Promise<GetSysUserRes> => {
+  const getCatrgory = (params: GetCategoryReq): Promise<GetCategoryRes> => {
     // Use the params object directly to construct the payload
     const payload: Record<string, any> = {
       ...params,
     };
-    return ApiCalls<GetSysUserRes>({
-      endpoint: "/admin/systemUser/index",
+    return ApiCalls<GetCategoryRes>({
+      endpoint: "/admin/category/index",
       method: "POST",
       data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
+  const addCategory = (data: AddCategoryReq): Promise<AddSysUserRes> => {
+    return ApiCalls<AddSysUserRes>({
+      endpoint: "/admin/systemUser/register",
+      method: "POST",
+      data: data, // Directly pass the object
       headers: {
         "Content-Type": "application/json",
       },
@@ -153,6 +169,7 @@ const UseNetworkCalls = () => {
     addSysUser,
     deleteSysUser,
     getCatrgory,
+    addCategory,
   };
 };
 
