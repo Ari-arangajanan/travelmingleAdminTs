@@ -129,6 +129,21 @@ const UseNetworkCalls = () => {
     });
   };
 
+  const getCatrgory = (params: GetSysUserReq): Promise<GetSysUserRes> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+    };
+    return ApiCalls<GetSysUserRes>({
+      endpoint: "/admin/systemUser/index",
+      method: "POST",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   return {
     getUserloginReq,
     getSnUser,
@@ -137,6 +152,7 @@ const UseNetworkCalls = () => {
     getSysRole,
     addSysUser,
     deleteSysUser,
+    getCatrgory,
   };
 };
 
