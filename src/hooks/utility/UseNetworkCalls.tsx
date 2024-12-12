@@ -151,7 +151,7 @@ const UseNetworkCalls = () => {
 
   const addCategory = (data: AddCategoryReq): Promise<AddSysUserRes> => {
     return ApiCalls<AddSysUserRes>({
-      endpoint: "/admin/systemUser/register",
+      endpoint: "/admin/category/CreateOrUpdate",
       method: "POST",
       data: data, // Directly pass the object
       headers: {

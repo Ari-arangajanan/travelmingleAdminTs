@@ -58,7 +58,7 @@ const ServiceCategory = () => {
     };
 
     fetchUsers();
-  }, [page, rowsPerPage, filters]);
+  }, [page, rowsPerPage, filters, open]);
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
