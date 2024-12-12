@@ -8,6 +8,9 @@ import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import KebabDiningIcon from "@mui/icons-material/KebabDining";
+import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural";
+import HandshakeIcon from "@mui/icons-material/Handshake";
 import { Navigation } from "@toolpad/core";
 
 export const NAVIGATION: Navigation = [
@@ -40,7 +43,31 @@ export const NAVIGATION: Navigation = [
   },
   {
     kind: "header",
-    title: "System",
+    title: "Service Managements",
+  },
+  {
+    segment: "admin/service",
+    title: "Service Operations",
+    icon: <FaceRetouchingNaturalIcon />,
+    children: [
+      {
+        segment: "services",
+        title: "Services",
+        icon: <KebabDiningIcon />,
+      },
+      {
+        segment: "bookings",
+        title: "Bookings",
+        icon: <HandshakeIcon />,
+      },
+    ],
+  },
+  {
+    kind: "divider",
+  },
+  {
+    kind: "header",
+    title: "System Management",
   },
   {
     segment: "admin/system",

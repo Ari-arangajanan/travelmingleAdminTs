@@ -11,6 +11,8 @@ import ServiceProvider from "../pages/serviceProvider/ServiceProvider";
 import ServiceCategory from "../pages/serviceCategory/ServiceCategory";
 import SystemUser from "../pages/system/sysUser/SystemUser";
 import SysRole from "../pages/system/sysRole/SysRole";
+import Bookings from "../pages/bookingd/Bookings";
+import Services from "../pages/servicePage/Services";
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -48,6 +50,7 @@ const LayOut = (props: LayoutProps) => {
   // A function to render the correct page based on the current route
   const renderPage = (pathname: string) => {
     switch (pathname) {
+      // user management
       case "/admin/dashboard":
         return <DashBoard />;
       case "/admin/user":
@@ -56,6 +59,12 @@ const LayOut = (props: LayoutProps) => {
         return <ServiceProvider />;
       case "/admin/serviceCategory":
         return <ServiceCategory />;
+      // service Management
+      case "/admin/service/services":
+        return <Services />;
+      case "/admin/service/bookings":
+        return <Bookings />;
+      // system
       case "/admin/system/admin/sysUser":
         return <SystemUser />;
       case "/admin/system/admin/sysRole":
