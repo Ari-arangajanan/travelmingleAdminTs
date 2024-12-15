@@ -12,6 +12,7 @@ import KebabDiningIcon from "@mui/icons-material/KebabDining";
 import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import { Navigation } from "@toolpad/core";
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 
 export const NAVIGATION: Navigation = [
   {
@@ -50,6 +51,11 @@ export const NAVIGATION: Navigation = [
     title: "Service Operations",
     icon: <FaceRetouchingNaturalIcon />,
     children: [
+      {
+        segment: "registration",
+        title: "Services Registration",
+        icon: <AddBusinessIcon />,
+      },
       {
         segment: "services",
         title: "Services",

@@ -100,8 +100,8 @@ const TableComponent = ({
 
   const filteredData = useMemo(
     () =>
-      data.filter((row) =>
-        columns.some((column) => {
+      (data || []).filter((row) =>
+        (columns || []).some((column) => {
           const cellValue = row[column.id];
           return cellValue
             ? cellValue
@@ -116,11 +116,13 @@ const TableComponent = ({
 
   const sortedData = useMemo(
     () =>
-      [...filteredData].sort((a, b) =>
-        order === "desc"
-          ? b[orderBy].toString().localeCompare(a[orderBy].toString())
-          : a[orderBy].toString().localeCompare(b[orderBy].toString())
-      ),
+      [...filteredData].sort((a, b) => {
+        const aValue = a[orderBy] || ""; // Default to empty string if undefined
+        const bValue = b[orderBy] || "";
+        return order === "desc"
+          ? bValue.toString().localeCompare(aValue.toString())
+          : aValue.toString().localeCompare(bValue.toString());
+      }),
     [filteredData, order, orderBy]
   );
 

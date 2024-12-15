@@ -5,6 +5,10 @@ import {
   GetCategoryRes,
 } from "../../pages/serviceCategory/ServiceCategoryInterface";
 import {
+  GetServiceReq,
+  GetServiceRes,
+} from "../../pages/servicePage/ServicesInterface";
+import {
   ServiceProviderListRequest,
   ServiceProviderListResponse,
 } from "../../pages/serviceProvider/ServiceProviderInterface";
@@ -160,6 +164,21 @@ const UseNetworkCalls = () => {
     });
   };
 
+  const getServices = (params: GetServiceReq): Promise<GetServiceRes> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+    };
+    return ApiCalls<GetServiceRes>({
+      endpoint: "/admin/service/getServices",
+      method: "POST",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   return {
     getUserloginReq,
     getSnUser,
@@ -170,6 +189,7 @@ const UseNetworkCalls = () => {
     deleteSysUser,
     getCatrgory,
     addCategory,
+    getServices,
   };
 };
 

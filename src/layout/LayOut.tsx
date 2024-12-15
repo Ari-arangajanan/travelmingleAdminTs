@@ -13,6 +13,7 @@ import SystemUser from "../pages/system/sysUser/SystemUser";
 import SysRole from "../pages/system/sysRole/SysRole";
 import Bookings from "../pages/bookingd/Bookings";
 import Services from "../pages/servicePage/Services";
+import ServiceRegistration from "../serviceRegistration/ServiceRegistration";
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -59,11 +60,15 @@ const LayOut = (props: LayoutProps) => {
         return <ServiceProvider />;
       case "/admin/serviceCategory":
         return <ServiceCategory />;
+
       // service Management
+      case "/admin/service/registration":
+        return <ServiceRegistration />;
       case "/admin/service/services":
         return <Services />;
       case "/admin/service/bookings":
         return <Bookings />;
+
       // system
       case "/admin/system/admin/sysUser":
         return <SystemUser />;
