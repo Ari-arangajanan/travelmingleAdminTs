@@ -40,7 +40,7 @@ const ServiceRegistration = () => {
     serviceProviderId: 0,
   });
   const [open, setOpen] = useState(false);
-  const { getServices } = UseNetworkCalls();
+  const { getServicesRegistration } = UseNetworkCalls();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -53,7 +53,7 @@ const ServiceRegistration = () => {
       };
       try {
         // Fetch data
-        const response = await getServices(params);
+        const response = await getServicesRegistration(params);
         setData(response.content);
         console.log(data);
 

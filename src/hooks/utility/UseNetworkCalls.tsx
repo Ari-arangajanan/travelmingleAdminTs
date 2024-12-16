@@ -25,6 +25,10 @@ import {
   GetSysUserRes,
 } from "../../pages/system/sysUser/SysUser";
 import { UserListRequest, UserListResponse } from "../../pages/user/User";
+import {
+  GetServiceRegistrationReq,
+  GetServiceRegistrationRes,
+} from "../../serviceRegistration/ServiceRegistrationInterface";
 import ApiCalls from "./ApiCalls";
 
 const UseNetworkCalls = () => {
@@ -179,6 +183,23 @@ const UseNetworkCalls = () => {
     });
   };
 
+  const getServicesRegistration = (
+    params: GetServiceRegistrationReq
+  ): Promise<GetServiceRegistrationRes> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+    };
+    return ApiCalls<GetServiceRegistrationRes>({
+      endpoint: "/admin/service/getAllServiceRegistration",
+      method: "POST",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   return {
     getUserloginReq,
     getSnUser,
@@ -190,6 +211,7 @@ const UseNetworkCalls = () => {
     getCatrgory,
     addCategory,
     getServices,
+    getServicesRegistration,
   };
 };
 

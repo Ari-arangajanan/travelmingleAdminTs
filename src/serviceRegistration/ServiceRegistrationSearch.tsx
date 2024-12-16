@@ -7,11 +7,7 @@ interface searchBarProps {
 }
 
 const ServiceRegistrationSearch: React.FC<searchBarProps> = ({ onSearch }) => {
-  const [filters, setFilters] = useState<{ [key: string]: any }>({
-    serviceName: "",
-    categoryId: "",
-    serviceProviderId: "",
-  });
+  const [filters, setFilters] = useState<{ [key: string]: any }>({});
 
   const handleInputChange = (field: string, value: any) => {
     const xObj = (prev: { [key: string]: any }) => ({
@@ -27,17 +23,17 @@ const ServiceRegistrationSearch: React.FC<searchBarProps> = ({ onSearch }) => {
     <Box display="flex" gap={2} alignItems="center" mb={2}>
       <SearchFieldProps
         label="Service Name"
-        query={filters.serviceName}
+        query={filters.serviceName || ""}
         onChange={(value) => handleInputChange("userName", value)}
       />
       <SearchFieldProps
         label="Category ID"
-        query={filters.categoryId}
+        query={filters.categoryId || ""}
         onChange={(value) => handleInputChange("id", value)}
       />
       <SearchFieldProps
         label="Service Provider ID"
-        query={filters.serviceProviderId}
+        query={filters.serviceProviderId || ""}
         onChange={(value) => handleInputChange("id", value)}
       />
       <Button variant="contained" onClick={handleSearchClick}>
