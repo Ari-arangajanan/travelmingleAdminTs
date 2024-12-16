@@ -17,7 +17,24 @@ import {
 import { visuallyHidden } from "@mui/utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+
 import React, { useMemo, useState } from "react";
+
+interface ToolbarAction {
+  icon: React.ReactNode;
+  label: string;
+  onClick: (...args: any[]) => void | Promise<void>;
+  color?:
+    | "info"
+    | "warning"
+    | "error"
+    | "success"
+    | "inherit"
+    | "primary"
+    | "secondary"; // Match Material-UI
+}
 
 interface Column {
   id: string;
@@ -35,9 +52,12 @@ interface DynamiTableProps {
   onRowsPerPageChange: (rowsPerPage: number) => void;
   onDelete?: (id: number) => void;
   onUpdate?: (id: number) => void;
+  onApprove?: (id: number) => void;
+  onReject?: (id: number) => void;
   onAdd?: () => void;
   showSearch?: boolean;
   showAddButton?: boolean;
+  toolbarActions?: ToolbarAction[]; // New prop for dynamic toolbar actions
 }
 
 const TableComponent = ({
@@ -50,9 +70,12 @@ const TableComponent = ({
   onRowsPerPageChange,
   onDelete,
   onUpdate,
+  onApprove,
+  onReject,
   onAdd,
   showSearch,
   showAddButton = false,
+  toolbarActions = [],
 }: DynamiTableProps) => {
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = useState<string>(columns[0]?.id || "");
@@ -156,6 +179,29 @@ const TableComponent = ({
           </Button>
         )}
       </Box>
+      {/* Toolbar Actions */}
+      {toolbarActions.length > 0 && (
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2, // Space between buttons
+            mb: 2,
+          }}
+        >
+          {toolbarActions.map((action, index) => (
+            <Button
+              key={index}
+              startIcon={action.icon}
+              variant="contained"
+              color={action.color || "primary"} // Default to "primary" if no color is provided
+              onClick={action.onClick}
+              sx={{ marginRight: 1 }} // Optional: Add spacing between buttons
+            >
+              {action.label}
+            </Button>
+          ))}
+        </Box>
+      )}
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
           <Table>
@@ -191,11 +237,12 @@ const TableComponent = ({
                     </TableSortLabel>
                   </TableCell>
                 ))}
-                {(onUpdate || onDelete) && (
+                {(onUpdate || onDelete || onApprove || onReject) && (
                   <TableCell
                     sx={{
                       position: "sticky",
                       right: 0,
+                      textAlign: "center",
                       background: "white",
                       zIndex: 1,
                     }}
@@ -228,25 +275,64 @@ const TableComponent = ({
                         {row[column.id]}
                       </TableCell>
                     ))}
-                    {(onUpdate || onDelete) && (
+                    {(onUpdate || onDelete || onApprove || onReject) && (
                       <TableCell
                         sx={{
                           position: "sticky",
                           right: 0,
+                          textAlign: "center",
                           background: "white",
                           zIndex: 1,
+                          width: "auto", // Let the width shrink to fit content
                         }}
                       >
-                        {onUpdate && (
-                          <IconButton onClick={() => onUpdate(row.id)}>
-                            <EditIcon />
-                          </IconButton>
-                        )}
-                        {onDelete && (
-                          <IconButton onClick={() => onDelete(row.id)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        )}
+                        <Box
+                          sx={{
+                            display: "grid", // Use CSS grid
+                            gridTemplateColumns: `repeat(${[onUpdate, onDelete, onApprove, onReject].filter(Boolean).length > 2 ? 2 : 1}, auto)`, // 2 columns if >2 icons, otherwise 1
+                            gap: 1, // Spacing between icons
+                            justifyContent: "center",
+                          }}
+                        >
+                          {onUpdate && (
+                            <IconButton
+                              color="primary"
+                              onClick={() => onUpdate(row.id)}
+                              title="Edit"
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          )}
+                          {onDelete && (
+                            <IconButton
+                              color="secondary"
+                              onClick={() => onDelete(row.id)}
+                              title="Delete"
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          )}
+                          {onApprove && (
+                            <IconButton
+                              color="success"
+                              onClick={() => onApprove(row.id)}
+                              title="Approve"
+                            >
+                              {/* Replace DeleteIcon with your desired icon */}
+                              <CheckCircleIcon />
+                            </IconButton>
+                          )}
+                          {onReject && (
+                            <IconButton
+                              color="error"
+                              onClick={() => onReject(row.id)}
+                              title="Reject"
+                            >
+                              {/* Replace DeleteIcon with your desired icon */}
+                              <CancelIcon />
+                            </IconButton>
+                          )}
+                        </Box>
                       </TableCell>
                     )}
                   </TableRow>

@@ -6,6 +6,9 @@ import { AddCategoryReq, SearchCategoryReq } from "./ServiceCategoryInterface";
 import TableComponent from "../../assets/Componets/TableComponent";
 import CategorySearch from "./CategorySearch";
 import UseNetworkCalls from "../../hooks/utility/UseNetworkCalls";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 const ServiceCategory = () => {
   const columnsSet = [
@@ -132,6 +135,21 @@ const ServiceCategory = () => {
     setPage(0);
   };
 
+  // -------------------------------
+  // const handleAdd = (id: number) => {
+  //   console.log("Add clicked");
+  // };
+
+  const handleEdit = (id: number) => {
+    console.log("Edit clicked");
+  };
+
+  const toolbarActions = [
+    { icon: <AddIcon />, label: "Add", onClick: handleAdd },
+    { icon: <EditIcon />, label: "Edit", onClick: handleEdit },
+    { icon: <DeleteIcon />, label: "Delete", onClick: handleDelete },
+  ];
+
   return (
     <>
       <>
@@ -156,11 +174,12 @@ const ServiceCategory = () => {
                 setRowsPerPage(newRowsPerPage);
                 setPage(0); // Reset to the first page when rows per page changes
               }}
-              onAdd={handleAdd}
+              // onAdd={handleAdd}
               onUpdate={handleUpdate}
               onDelete={handleDelete}
               showSearch={true}
               showAddButton={true}
+              toolbarActions={toolbarActions}
             />
           </Box>
         </Box>

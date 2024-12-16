@@ -5,6 +5,12 @@ import { Box } from "@mui/material";
 import TableComponent from "../assets/Componets/TableComponent";
 import { SearchServiceRegistrationReq } from "./ServiceRegistrationInterface";
 import ServiceRegistrationSearch from "./ServiceRegistrationSearch";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import EditAttributesTwoToneIcon from "@mui/icons-material/EditAttributesTwoTone";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import InfoIcon from "@mui/icons-material/Info";
 
 const ServiceRegistration = () => {
   const columnsSet = [
@@ -109,12 +115,67 @@ const ServiceRegistration = () => {
     setPage(0);
   };
 
+  const handleApprove = (id: number) => {
+    alert(`"clicked approve": ${id}`);
+  };
+
+  const handleReject = (id: number) => {
+    alert(`"clicked reject", ${id}`);
+  };
+
+  // -------------------------------
+  const handleDetail = (id: number) => {
+    console.log("Add clicked");
+  };
+
+  const handleEdit = (id: number) => {
+    console.log("Edit clicked");
+  };
+
+  const handleSpprove = (id: number) => {
+    alert(`"clicked: " ${id}`);
+  };
+
+  // const handleReject = (id: number)=>{
+  //   alert(`"clicked: " ${id}` )
+  // }
+
+  const toolbarActions = [
+    {
+      icon: <InfoIcon />,
+      label: "Detail",
+      onClick: handleDetail,
+      color: "info" as "info", // Button will have Material-UI "info" color
+    },
+    {
+      icon: <EditIcon />,
+      label: "Edit",
+      onClick: handleEdit,
+      color: "warning" as "warning", // "warning" color
+    },
+    {
+      icon: <DeleteIcon />,
+      label: "Delete",
+      onClick: handleDelete,
+      color: "error" as "error", // "error" color for deletion
+    },
+    {
+      icon: <EditAttributesTwoToneIcon />,
+      label: "Approve",
+      onClick: handleApprove,
+      color: "success" as "success", // "success" color for approval
+    },
+    {
+      icon: <RemoveCircleOutlineIcon />,
+      label: "Reject",
+      onClick: handleReject,
+      color: "error" as "error", // "error" color for rejection
+    },
+  ];
+
   return (
     <>
       <Box>
-        <Box sx={{ padding: 2 }}>
-          <button> approval </button>
-        </Box>
         <Box>
           <ServiceRegistrationSearch onSearch={handleSearch} />
         </Box>
@@ -133,8 +194,11 @@ const ServiceRegistration = () => {
             }}
             onUpdate={handleUpdate}
             onDelete={handleDelete}
+            onApprove={handleApprove}
+            onReject={handleReject}
             showSearch={true}
             showAddButton={true}
+            toolbarActions={toolbarActions}
           />
         </Box>
       </Box>
