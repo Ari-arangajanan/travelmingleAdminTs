@@ -168,7 +168,7 @@ const UseNetworkCalls = () => {
     });
   };
 
-  const getServices = (params: GetServiceReq): Promise<GetServiceRes> => {
+  const getAllServices = (params: GetServiceReq): Promise<GetServiceRes> => {
     // Use the params object directly to construct the payload
     const payload: Record<string, any> = {
       ...params,
@@ -210,7 +210,7 @@ const UseNetworkCalls = () => {
     deleteSysUser,
     getCatrgory,
     addCategory,
-    getServices,
+    getAllServices,
     getServicesRegistration,
   };
 };

@@ -76,7 +76,9 @@ export interface GetServiceReq {
   }
   
   export interface SearchServiceReq {
-    serviceName: string;
+    serviceName?: string;
+    categoryId?: number,
+    serviceProviderId?: number,
   }
   
   export interface DeleteServiceReq {
