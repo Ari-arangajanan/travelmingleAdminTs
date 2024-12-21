@@ -100,3 +100,18 @@ export interface GetServiceRegistrationReq {
     message: string;
   }
   
+
+  export interface ApproveRequest {
+    requestId: number;
+    status: "APPROVED" | "REJECTED"; // Enum-like type for status
+    reason: string; // Reason for approval or rejection
+  }
+
+  export interface ApproveResponse {
+    status: "APPROVED" | "REJECTED"; // Enum-like type for status
+    servicesRegistrationId: number;  // ID of the service registration
+    rejectReason?: string;           // Optional, only for rejected cases
+    approvalDate?: string;           // Optional, only for approved/rejected cases
+  }
+  
+  

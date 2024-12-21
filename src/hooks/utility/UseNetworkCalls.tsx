@@ -26,6 +26,8 @@ import {
 } from "../../pages/system/sysUser/SysUser";
 import { UserListRequest, UserListResponse } from "../../pages/user/User";
 import {
+  ApproveRequest,
+  ApproveResponse,
   GetServiceRegistrationReq,
   GetServiceRegistrationRes,
 } from "../../serviceRegistration/ServiceRegistrationInterface";
@@ -200,6 +202,21 @@ const UseNetworkCalls = () => {
     });
   };
 
+  const approveService = (params: ApproveRequest): Promise<ApproveResponse> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+    };
+    return ApiCalls<ApproveResponse>({
+      endpoint: "/admin/service/registrations/approve",
+      method: "PUT",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   return {
     getUserloginReq,
     getSnUser,
@@ -212,6 +229,7 @@ const UseNetworkCalls = () => {
     addCategory,
     getAllServices,
     getServicesRegistration,
+    approveService,
   };
 };
 

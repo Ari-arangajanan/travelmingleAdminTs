@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import UseNetworkCalls from "../hooks/utility/UseNetworkCalls";
 import { Box } from "@mui/material";
 import TableComponent from "../assets/Componets/TableComponent";
-import { SearchServiceRegistrationReq } from "./ServiceRegistrationInterface";
+import {
+  ApproveRequest,
+  SearchServiceRegistrationReq,
+} from "./ServiceRegistrationInterface";
 import ServiceRegistrationSearch from "./ServiceRegistrationSearch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -45,7 +48,8 @@ const ServiceRegistration = () => {
     serviceProviderId: 0,
   });
   const [open, setOpen] = useState(false);
-  const { getServicesRegistration } = UseNetworkCalls();
+  const { getServicesRegistration, approveService } = UseNetworkCalls();
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -86,8 +90,77 @@ const ServiceRegistration = () => {
     alert(`Update clicked for ID: ${id}`);
   };
 
+  const handleSearch = (newFilters: SearchServiceRegistrationReq) => {
+    setFilters(newFilters);
+    setPage(0);
+  };
+
+  const handleApprove = (id: number) => async () => {
+    if (id !== 0) {
+      alert(`ID are selected for approval : ${selectedIds}`);
+      const payload: ApproveRequest = {
+        requestId: id,
+        status: "APPROVED",
+        reason: "Seems good",
+      };
+      try {
+        const response = await approveService(payload);
+        if (response) {
+          alert("User added successfully!");
+          window.location.reload();
+        } else {
+          alert(`Failed to delete user: ${response}`);
+        }
+      } catch (error: any) {
+        console.error("Error adding user:", error);
+        alert("An error occurred while deleting the user.");
+        if (error.response?.status === 401) {
+          alert("system.unAuthorized");
+          navigate("/login");
+        } else {
+          setError("Failed to delete user.");
+        }
+      }
+    } else {
+      // alert(`Selected IDs for approval: ${selectedIds.join(", ")}`);
+      console.log("Approve clicked for IDs:", selectedIds);
+    }
+  };
+
+  const handleReject = (id: number) => {
+    alert(`"clicked reject", ${id}`);
+  };
+
+  // -------------------------------
+  const handleDetail = (id: number) => {
+    console.log("Add clicked", id);
+  };
+
+  const handleEdit = (id: number) => {
+    console.log("Edit clicked:", id);
+  };
+
+  const handleDelete = (selectedIds: number[]) => {
+    alert(`"clicked: " ${selectedIds}`);
+  };
+
+  // ------------------------------------
+
+  const handleRejectOne = (id: number) => {
+    alert(`"clicked reject", ${id}`);
+  };
+
+  const handleApproveSingle = (id: number) => {
+    alert(`"clicked: " ${id}`);
+  };
+
+  const handleSelectionChange = (ids: number[]) => {
+    setSelectedIds(ids);
+    console.log("Selected IDs:", ids);
+  };
+
   // Handle Delete action
-  const handleDelete = async (id: number) => {
+  const handleDeleteOne = async (id: number) => {
     alert(`Delete clicked for ID: ${id}`);
     try {
       // const response = await deleteSysUser({ id });
@@ -109,66 +182,52 @@ const ServiceRegistration = () => {
       }
     }
   };
-  const handleSearch = (newFilters: SearchServiceRegistrationReq) => {
-    setFilters(newFilters);
-    setPage(0);
-  };
-
-  const handleApprove = (id: number) => {
-    alert(`"clicked approve": ${id}`);
-  };
-
-  const handleReject = (id: number) => {
-    alert(`"clicked reject", ${id}`);
-  };
-
-  // -------------------------------
-  const handleDetail = (id: number) => {
-    console.log("Add clicked");
-  };
-
-  const handleEdit = (id: number) => {
-    console.log("Edit clicked");
-  };
-
-  const handleSpprove = (id: number) => {
-    alert(`"clicked: " ${id}`);
-  };
-
-  // const handleReject = (id: number)=>{
-  //   alert(`"clicked: " ${id}` )
-  // }
 
   const toolbarActions = [
     {
       icon: <InfoIcon />,
       label: "Detail",
-      onClick: handleDetail,
+      onClick: () => {
+        handleDetail(selectedIds[0]);
+      },
       color: "info" as "info", // Button will have Material-UI "info" color
+      disabled: selectedIds.length !== 1, // Disable the button if more than one row is selected
     },
     {
       icon: <EditIcon />,
       label: "Edit",
-      onClick: handleEdit,
+      onClick: () => {
+        handleEdit(selectedIds[0]);
+      },
       color: "warning" as "warning", // "warning" color
+      disabled: selectedIds.length !== 1, // Disable the button if more than one row is selected
     },
     {
       icon: <DeleteIcon />,
       label: "Delete",
-      onClick: handleDelete,
+      onClick: () => {
+        handleDelete(selectedIds);
+      },
       color: "error" as "error", // "error" color for deletion
+      disabled: selectedIds.length === 0, // Disable the button if no row is selected
     },
     {
       icon: <EditAttributesTwoToneIcon />,
       label: "Approve",
-      onClick: handleApprove,
+      onClick: () => {
+        handleApprove(selectedIds[0])();
+      },
       color: "success" as "success", // "success" color for approval
+      disabled: selectedIds.length !== 1, // Disable the button if more than one row is selected
     },
     {
       icon: <RemoveCircleOutlineIcon />,
       label: "Reject",
-      onClick: handleReject,
+      onClick: () => {
+        handleReject(selectedIds[0]);
+      },
       color: "error" as "error", // "error" color for rejection
+      disabled: selectedIds.length !== 1, // Disable the button if more than one row is selected
     },
   ];
 
@@ -192,12 +251,13 @@ const ServiceRegistration = () => {
               setPage(0); // Reset to the first page when rows per page changes
             }}
             onUpdate={handleUpdate}
-            onDelete={handleDelete}
-            onApprove={handleApprove}
-            onReject={handleReject}
+            onDelete={handleDeleteOne}
+            onApprove={handleApproveSingle}
+            onReject={handleRejectOne}
             showSearch={true}
             showAddButton={true}
             toolbarActions={toolbarActions}
+            onSelectionChange={handleSelectionChange} // Pass callback
           />
         </Box>
       </Box>

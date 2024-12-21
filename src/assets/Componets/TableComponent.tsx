@@ -25,7 +25,7 @@ import React, { useMemo, useState } from "react";
 interface ToolbarAction {
   icon: React.ReactNode;
   label: string;
-  onClick: (...args: any[]) => void | Promise<void>;
+  onClick: () => void | Promise<void>;
   color?:
     | "info"
     | "warning"
@@ -34,6 +34,7 @@ interface ToolbarAction {
     | "inherit"
     | "primary"
     | "secondary"; // Match Material-UI
+  disabled?: boolean;
 }
 
 interface Column {
@@ -58,6 +59,7 @@ interface DynamiTableProps {
   showSearch?: boolean;
   showAddButton?: boolean;
   toolbarActions?: ToolbarAction[]; // New prop for dynamic toolbar actions
+  onSelectionChange?: (selectedIds: number[]) => void;
 }
 
 const TableComponent = ({
@@ -76,6 +78,7 @@ const TableComponent = ({
   showSearch,
   showAddButton = false,
   toolbarActions = [],
+  onSelectionChange,
 }: DynamiTableProps) => {
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = useState<string>(columns[0]?.id || "");
@@ -94,9 +97,13 @@ const TableComponent = ({
     if (event.target.checked) {
       const newSelected = data.map((item) => item.id);
       setSelected(newSelected);
+      onSelectionChange?.(newSelected); // Notify parent
       return;
+    } else {
+      setSelected([]);
+      onSelectionChange?.([]); // Notify parent
     }
-    setSelected([]);
+    console.log("__________________Selected: ", selected);
   };
 
   const handleClick = (id: number) => {
@@ -115,6 +122,7 @@ const TableComponent = ({
       );
     }
     setSelected(newSelected);
+    onSelectionChange?.(newSelected); // Notify parent
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,6 +156,22 @@ const TableComponent = ({
       }),
     [filteredData, order, orderBy]
   );
+
+  const handleCheckboxClick = (event: React.MouseEvent, id: number) => {
+    event.stopPropagation(); // Prevent row click from firing
+    handleRowClick(id);
+  };
+
+  const handleRowClick = (id: number) => {
+    setSelected((prevSelected) => {
+      const isSelected = prevSelected.includes(id);
+      const newSelected = isSelected
+        ? prevSelected.filter((selectedId) => selectedId !== id) // Deselect
+        : [...prevSelected, id]; // Append to selection
+      onSelectionChange?.(newSelected); // Notify parent
+      return newSelected;
+    });
+  };
 
   const visibleRows = sortedData.slice(
     page * rowsPerPage,
@@ -195,6 +219,7 @@ const TableComponent = ({
               variant="contained"
               color={action.color || "primary"} // Default to "primary" if no color is provided
               onClick={action.onClick}
+              disabled={action.disabled} // Disable button based on condition
               sx={{ marginRight: 1 }} // Optional: Add spacing between buttons
             >
               {action.label}
@@ -265,7 +290,10 @@ const TableComponent = ({
                     selected={isItemSelected}
                   >
                     <TableCell padding="checkbox">
-                      <Checkbox checked={isItemSelected} />
+                      <Checkbox
+                        checked={isItemSelected}
+                        onClick={(event) => handleCheckboxClick(event, row.id)}
+                      />
                     </TableCell>
                     {columns.map((column) => (
                       <TableCell
