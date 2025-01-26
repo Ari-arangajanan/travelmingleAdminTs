@@ -14,6 +14,7 @@ import SysRole from "../pages/system/sysRole/SysRole";
 import Bookings from "../pages/bookingd/Bookings";
 import Services from "../pages/servicePage/Services";
 import ServiceRegistration from "../serviceRegistration/ServiceRegistration";
+import Payment from "../pages/payment/Payment";
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -68,6 +69,8 @@ const LayOut = (props: LayoutProps) => {
         return <Services />;
       case "/admin/service/bookings":
         return <Bookings />;
+      case "/admin/service/payment":
+        return <Payment />;
 
       // system
       case "/admin/system/admin/sysUser":

@@ -13,6 +13,7 @@ import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import { Navigation } from "@toolpad/core";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 export const NAVIGATION: Navigation = [
   {
@@ -65,6 +66,11 @@ export const NAVIGATION: Navigation = [
         segment: "bookings",
         title: "Bookings",
         icon: <HandshakeIcon />,
+      },
+      {
+        segment: "payment",
+        title: "Payment",
+        icon: <AccountBalanceWalletIcon />,
       },
     ],
   },
