@@ -1,3 +1,7 @@
+import {
+  GetBookingReq,
+  GetBookingRes,
+} from "../../pages/bookingd/BookingInterface";
 import { getUserloginReq, getUserloginRes } from "../../pages/login/UserLogin";
 import {
   AddCategoryReq,
@@ -217,6 +221,21 @@ const UseNetworkCalls = () => {
     });
   };
 
+  const getAllBookings = (params: GetBookingReq): Promise<GetBookingRes> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+    };
+    return ApiCalls<GetBookingRes>({
+      endpoint: "/admin/bookings/index",
+      method: "POST",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   return {
     getUserloginReq,
     getSnUser,
@@ -230,6 +249,7 @@ const UseNetworkCalls = () => {
     getAllServices,
     getServicesRegistration,
     approveService,
+    getAllBookings,
   };
 };
 
