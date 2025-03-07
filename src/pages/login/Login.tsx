@@ -97,6 +97,14 @@ const Login = () => {
           sx={{ mb: 2 }}
           fontFamily={"Poppins"}
         >
+          Travel Mingle Admin Panel
+        </Typography>
+        <Typography
+          component="h1"
+          variant="h5"
+          sx={{ mb: 2 }}
+          fontFamily={"Poppins"}
+        >
           Login
         </Typography>
         <Box
