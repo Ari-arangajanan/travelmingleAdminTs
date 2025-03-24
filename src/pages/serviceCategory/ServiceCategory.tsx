@@ -147,7 +147,7 @@ const ServiceCategory = () => {
   const toolbarActions = [
     { icon: <AddIcon />, label: "Add", onClick: handleAdd },
     { icon: <EditIcon />, label: "Edit", onClick: handleEdit },
-    { icon: <DeleteIcon />, label: "Delete", onClick: handleDelete },
+    { icon: <DeleteIcon />, label: "Delete", onClick: () => handleDelete(0) },
   ];
 
   return (

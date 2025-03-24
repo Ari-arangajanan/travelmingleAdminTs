@@ -9,7 +9,7 @@ const DashBoard = () => {
   const stats = [
     {
       title: "Total Users",
-      value: "40,689",
+      value: "9",
       change: "8.5% Up from yesterday",
       changeType: "increase" as "increase",
       icon: <FaUser size={24} className="text-blue-600" />,
@@ -17,7 +17,7 @@ const DashBoard = () => {
     },
     {
       title: "Total Orders",
-      value: "10,293",
+      value: "10",
       change: "1.3% Up from last week",
       changeType: "increase" as "increase",
       icon: <FaBox size={24} className="text-yellow-600" />,
@@ -25,7 +25,7 @@ const DashBoard = () => {
     },
     {
       title: "Total Sales",
-      value: "$89,000",
+      value: "$89",
       change: "4.3% Down from yesterday",
       changeType: "decrease" as "decrease",
       icon: <FaDollarSign size={24} className="text-green-600" />,
@@ -33,7 +33,7 @@ const DashBoard = () => {
     },
     {
       title: "Total Pending",
-      value: "2,040",
+      value: "40",
       change: "1.8% Up from yesterday",
       changeType: "increase" as "increase",
       icon: <FaClock size={24} className="text-red-600" />,

@@ -64,7 +64,7 @@ const Services = () => {
           alert("system.unAuthorized");
           navigate("/login");
         } else {
-          setError("Failed to fetch users.");
+          setError("Failed to fetch service.");
         }
       } finally {
         setLoading(false); // Stop loading

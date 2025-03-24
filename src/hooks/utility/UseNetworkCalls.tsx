@@ -4,6 +4,12 @@ import {
 } from "../../pages/bookingd/BookingInterface";
 import { getUserloginReq, getUserloginRes } from "../../pages/login/UserLogin";
 import {
+  PaymentDetailsRequest,
+  PaymentDetailsResponse,
+  ValidatePaymentApproveRequest,
+  ValidatePaymentApproveResponse,
+} from "../../pages/payment/PaymentInterface";
+import {
   AddCategoryReq,
   GetCategoryReq,
   GetCategoryRes,
@@ -236,6 +242,40 @@ const UseNetworkCalls = () => {
     });
   };
 
+  const getAllpayments = (
+    params: PaymentDetailsRequest
+  ): Promise<PaymentDetailsResponse> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+    };
+    return ApiCalls<PaymentDetailsResponse>({
+      endpoint: "/admin/payment/getAllPayments",
+      method: "POST",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
+  const approvePayment = (
+    params: ValidatePaymentApproveRequest
+  ): Promise<ValidatePaymentApproveResponse> => {
+    // Use the params object directly to construct the payload
+    const payload: Record<string, any> = {
+      ...params,
+    };
+    return ApiCalls<ValidatePaymentApproveResponse>({
+      endpoint: "/admin/payment/validatePayment",
+      method: "POST",
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   return {
     getUserloginReq,
     getSnUser,
@@ -250,6 +290,8 @@ const UseNetworkCalls = () => {
     getServicesRegistration,
     approveService,
     getAllBookings,
+    getAllpayments,
+    approvePayment,
   };
 };
 
